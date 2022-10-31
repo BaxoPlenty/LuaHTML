@@ -1,4 +1,19 @@
+local logger = {}
+
+function logger:info(message)
+	print("[LUAHTML -    INFO] " .. message)
+end
+
+function logger:warning(message)
+	print("[LUAHTML - WARNING] " .. message)
+end
+
+function logger:error(message)
+	print("[LUAHTML -   ERROR] " .. message)
+end
+
 local library = {}
+local functions = {}
 local generalProperties = {
 	["Name"] = function(element, value)
 		element.Name = value
@@ -52,7 +67,7 @@ local generalProperties = {
 	end
 }
 local properties = {
-	["gui"] = {
+	["Gui"] = {
 		["Name"] = generalProperties.Name,
 	},
 	["Frame"] = {
@@ -76,11 +91,18 @@ local properties = {
 		["BorderRadius"] = generalProperties.BorderRadius,
 		["Position"] = generalProperties.Position,
 		["Color"] = generalProperties.Color,
+		["OnClick"] = function (element, value)
+			if functions[value] then
+				element.MouseButton1Click:Connect(functions[value])
+			else
+				logger:warning("OnClick property doesn't have a valid function.")
+			end
+		end
 	},
 }
 
 local realTagNames = {
-	["gui"] = "ScreenGui",
+	["Gui"] = "ScreenGui",
 	["Frame"] = "Frame",
 	["Button"] = "TextButton",
 }
@@ -96,6 +118,10 @@ local function createTag(tagName, attributes)
 	end
 
 	return element
+end
+
+function library:initializeFunctions(functionsTable)
+	functions = functionsTable
 end
 
 function library:create(html)
