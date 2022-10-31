@@ -1,34 +1,81 @@
 local library = {}
+local generalProperties = {
+	["Name"] = function(element, value)
+		element.Name = value
+	end,
+	["Size"] = function(element, value)
+		element.Size = UDim2.new(unpack(string.split(value, ",")))
+	end,
+	["BackgroundColor"] = function(element, value)
+		if string.find(value, "#") == 1 then
+			element.BackgroundColor3 = Color3.fromHex(value)
+		else
+			element.BackgroundColor3 = Color3.fromRGB(unpack(string.split(value, ",")))
+		end
+	end,
+	["BackgroundTransparency"] = function(element, value)
+		element.BackgroundTransparency = value
+	end,
+	["BorderThickness"] = function(element, value)
+		element.BorderSizePixel = value
+	end,
+	["BorderColor"] = function(element, value)
+		if string.find(value, "#") == 1 then
+			element.BorderColor3 = Color3.fromHex(value)
+		else
+			element.BorderColor3 = Color3.fromRGB(unpack(string.split(value, ",")))
+		end
+	end,
+	["Color"] = function(element, value)
+		if string.find(value, "#") == 1 then
+			element.TextColor3 = Color3.fromHex(value)
+		else
+			element.TextColor3 = Color3.fromRGB(unpack(string.split(value, ",")))
+		end
+	end,
+	["Text"] = function(element, value)
+		element.Text = value
+	end,
+	["BorderRadius"] = function(element, value)
+		local Rounding = Instance.new("UICorner")
+
+		if string.find(value, ',') == nil then
+			Rounding.CornerRadius = UDim.new(0, value)
+		else
+			Rounding.CornerRadius = UDim.new(unpack(string.split(value, ",")))
+		end
+
+		Rounding.Parent = element
+	end,
+	["Position"] = function(element, value)
+		element.Position = UDim2.new(unpack(string.split(value, ",")))
+	end
+}
 local properties = {
 	["gui"] = {
-		["Name"] = function(element, value)
-			element.Name = value
-		end,
+		["Name"] = generalProperties.Name,
 	},
 	["Frame"] = {
-		["Name"] = function(element, value)
-			element.Name = value
-		end,
-		["BackgroundColor"] = function(element, value)
-			element.BackgroundColor3 = Color3.fromHex(value)
-		end,
-		["Size"] = function(element, value)
-			element.Size = UDim2.new(unpack(string.split(value, ",")))
-		end,
+		["Name"] = generalProperties.Name,
+		["BackgroundColor"] = generalProperties.BackgroundColor,
+		["Size"] = generalProperties.Size,
+		["BackgroundTransparency"] = generalProperties.BackgroundTransparency,
+		["BorderThickness"] = generalProperties.BorderThickness,
+		["BorderColor"] = generalProperties.BorderColor,
+		["Position"] = generalProperties.Position,
+		["BorderRadius"] = generalProperties.BorderRadius,
 	},
 	["Button"] = {
-		["Name"] = function(element, value)
-			element.Name = value
-		end,
-		["Size"] = function(element, value)
-			element.Size = UDim2.new(unpack(string.split(value, ",")))
-		end,
-		["Text"] = function(element, value)
-			element.Text = value
-		end,
-		["BackgroundTransparency"] = function(element, value)
-			element.BackgroundTransparency = value
-		end,
+		["Name"] = generalProperties.Name,
+		["Size"] = generalProperties.Size,
+		["BackgroundColor"] = generalProperties.BackgroundColor,
+		["Text"] = generalProperties.Text,
+		["BackgroundTransparency"] = generalProperties.BackgroundTransparency,
+		["BorderThickness"] = generalProperties.BorderThickness,
+		["BorderColor"] = generalProperties.BorderColor,
+		["BorderRadius"] = generalProperties.BorderRadius,
+		["Position"] = generalProperties.Position,
+		["Color"] = generalProperties.Color,
 	},
 }
 
